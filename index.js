@@ -3,6 +3,7 @@ import fs from 'fs'
 import { AddTask } from './operations/add.js';
 import { DeleteTask } from './operations/delete.js';
 import { UpdateTask } from './operations/update.js';
+import { list } from './operations/list.js';
 
 /*
     The user should be able to:
@@ -12,9 +13,7 @@ import { UpdateTask } from './operations/update.js';
         4. List all tasks that are done
         5. List all tasks that are not done
         6. List all tasks that are in progress
-*/
 
-/* 
     Sample Usage: 
         # Adding a new task
         task-cli add "Buy groceries"
@@ -38,14 +37,32 @@ import { UpdateTask } from './operations/update.js';
 */
 
 const args = process.argv.slice(2)
+
 const operation = args[0]
-const id = args[1] 
-const task = args.slice([2]).join(" ")
 
 if (!operation) {
     console.log("Usage: node index.js <operation> [id] [task]")
     process.exit(1)
 }
 
-console.log({ operation, id, task })
+switch (operation) {
+    case "add":
+        AddTask(args[1])
+        break;
 
+    case "update":
+        UpdateTask(args[1], args[2])
+        break;
+
+    case "delete":
+        DeleteTask(args[1])
+        break;
+
+    case "list":
+        list()
+        break;
+
+    default:
+        console.log(`Error: such command as ${operation}`)
+        break;
+}
